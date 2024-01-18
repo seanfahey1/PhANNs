@@ -117,8 +117,8 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         train_Y = np.eye(num_classes)[train_Y_index - 1]
         test_Y = np.eye(num_classes)[test_Y_index - 1]
 
-        logging.info(f"test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
-
+        logging.info(f"Test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
+        logging.info(f'Train Y values look like: {train_Y}')
         es = EarlyStopping(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
         )
@@ -141,13 +141,12 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             verbose=1,
         )
 
-        print([x for x in range(1, num_classes + 1)], train_Y_index)
         class_weights = compute_class_weight(
-            "balanced", [x for x in range(1, num_classes + 1)], train_Y_index
+            "balanced", range(num_classes), train_Y_index - 1
         )
 
         train_weights = dict(zip(range(1, num_classes + 1), class_weights))
-        logging.info(f"train weights:\n{train_weights}")
+        logging.info(f"Train weights:\n{train_weights}")
 
         model = Sequential()
         opt = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, decay=0.0, amsgrad=False)
@@ -169,6 +168,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         model.compile(
             loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
         )
+        logging.info('Model built. Fitting...')
         history = model.fit(
             train_X,
             train_Y,
@@ -180,7 +180,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             callbacks=[es, mc, mc2],
         )
 
-        logging.info("Built model...")
+        logging.info("Fit model. Starting predictions...")
         test_Y_predicted = model.predict_classes(test_X)
 
         logging.info("Finished training! Saving models")
