@@ -110,7 +110,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
 
         f_num = train_X.shape[1]
 
-        num_of_class = max(train_Y_index) + 1
+        num_of_class = max(train_Y_index)
 
         train_Y = np.eye(num_of_class)[train_Y_index]
         test_Y = np.eye(num_of_class)[test_Y_index]
@@ -137,7 +137,6 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             save_best_only=True,
             verbose=1,
         )
-        print(np.unique(train_Y_index))
         class_weights = compute_class_weight(
             "balanced", range(1, num_of_class + 1), train_Y_index
         )
