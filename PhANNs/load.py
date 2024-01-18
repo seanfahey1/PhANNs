@@ -165,7 +165,7 @@ def main():
     logging.info("Config:")
     for section in config.keys():
         for k, v in config[section].items():
-            logging.info(f"{section}:{k}:{v}")
+            logging.info(f"\t{section}:{k}:{v}")
 
     file_dict = {}
     for prefix in config["load"].get("prefixes"):
