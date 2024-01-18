@@ -1,10 +1,11 @@
-import os
-import pickle as p
 import logging
-import toml
-import numpy as np
-from pathlib import Path
+import os
 import sys
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import toml
 from sklearn.metrics import classification_report
 from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras import backend as K
@@ -12,11 +13,8 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.layers import Activation, Dense, Dropout
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.optimizers import Adam
-import pandas as pd
 
-
-from utils import load_data, dump_data
-
+from utils import dump_data, load_data
 
 FORMAT = "%(asctime)-24s | %(message)s"
 logging.basicConfig(filename="train.log", level=logging.INFO, format=FORMAT)
@@ -103,8 +101,12 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
     for model_number in range(10):
         logging.info(f"Doing cross validation on {model_name} - {model_number}")
 
-        train_X, train_Y_index = get_train_data(model_name, model_number, class_arr, group_arr)
-        test_X, test_Y_index = get_validation_data(model_name, model_number, class_arr, group_arr)
+        train_X, train_Y_index = get_train_data(
+            model_name, model_number, class_arr, group_arr
+        )
+        test_X, test_Y_index = get_validation_data(
+            model_name, model_number, class_arr, group_arr
+        )
 
         f_num = train_X.shape[1]
 
@@ -112,45 +114,84 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
 
         train_Y = np.eye(num_of_class)[train_Y_index]
         test_Y = np.eye(num_of_class)[test_Y_index]
-        logging.info(f'test x shape: {test_X.shape}, test y shape: {test_Y.shape}')
+        logging.info(f"test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
 
-        es = EarlyStopping(monitor='loss', mode='min', verbose=2, patience=5, min_delta=0.02)
-        mc = ModelCheckpoint(os.path.join('models', model_name + '_val_' + "{:02d}".format(model_number) + '.h5'),
-                             monitor='val_loss', mode='min', save_best_only=True, verbose=1)
-        mc2 = ModelCheckpoint(os.path.join('models', model_name + '_acc_' + "{:02d}".format(model_number) + '.h5'),
-                              monitor='val_accuracy', mode='max', save_best_only=True, verbose=1)
+        es = EarlyStopping(
+            monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
+        )
+        mc = ModelCheckpoint(
+            os.path.join(
+                "models", model_name + "_val_" + "{:02d}".format(model_number) + ".h5"
+            ),
+            monitor="val_loss",
+            mode="min",
+            save_best_only=True,
+            verbose=1,
+        )
+        mc2 = ModelCheckpoint(
+            os.path.join(
+                "models", model_name + "_acc_" + "{:02d}".format(model_number) + ".h5"
+            ),
+            monitor="val_accuracy",
+            mode="max",
+            save_best_only=True,
+            verbose=1,
+        )
 
-        class_weights = compute_class_weight('balanced', range(num_of_class), train_Y_index)
+        class_weights = compute_class_weight(
+            "balanced", range(num_of_class), train_Y_index
+        )
 
         train_weights = dict(zip(range(num_of_class), class_weights))
-        logging.info(f'train weights:\n{train_weights}')
+        logging.info(f"train weights:\n{train_weights}")
 
         model = Sequential()
         opt = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, decay=0.0, amsgrad=False)
-        model.add(Dense(f_num, input_dim=f_num, kernel_initializer='random_uniform', activation='relu'))
+        model.add(
+            Dense(
+                f_num,
+                input_dim=f_num,
+                kernel_initializer="random_uniform",
+                activation="relu",
+            )
+        )
         model.add(Dropout(0.2))
-        model.add(Dense(200, activation='relu'))
+        model.add(Dense(200, activation="relu"))
         model.add(Dropout(0.2))
-        model.add(Dense(200, activation='relu'))
+        model.add(Dense(200, activation="relu"))
         model.add(Dropout(0.2))
-        model.add(Dense(num_of_class, activation='softmax'))
+        model.add(Dense(num_of_class, activation="softmax"))
 
-        model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
-        history = model.fit(train_X, train_Y, validation_data=(test_X, test_Y), epochs=120,
-                            batch_size=5000, verbose=2, class_weight=train_weights, callbacks=[es, mc, mc2])
+        model.compile(
+            loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        )
+        history = model.fit(
+            train_X,
+            train_Y,
+            validation_data=(test_X, test_Y),
+            epochs=120,
+            batch_size=5000,
+            verbose=2,
+            class_weight=train_weights,
+            callbacks=[es, mc, mc2],
+        )
 
-        logging.info('Built model...')
+        logging.info("Built model...")
         test_Y_predicted = model.predict_classes(test_X)
 
-        logging.info('Finished training! Saving models')
+        logging.info("Finished training! Saving models")
         df = add_to_df(df, test_Y_index, test_Y_predicted, model_name)
         model.save(Path(out_dir) / f'{model_name}_{"{:02d}".format(model_number)}.h5')
 
-        model_val = load_model(Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5')
+        model_val = load_model(
+            Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
+        )
         test_Y_predicted_val = model_val.predict_classes(test_X)
         df_val = add_to_df(df_val, test_Y_index, test_Y_predicted_val, model_name)
 
-        model_acc = load_model(Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5')
+        model_acc = load_model(
+            Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5'
+        )
         test_Y_predicted_acc = model_acc.predict_classes(test_X)
         df_acc = add_to_df(df_acc, test_Y_index, test_Y_predicted_acc, model_name)
 
@@ -192,12 +233,14 @@ def main():
     class_arr = load_data("features", "class_arr.p")
 
     for model_name in all_models:
-        logging.info(f'Starting model: {model_name}')
-        df, df_val, df_acc = train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr)
+        logging.info(f"Starting model: {model_name}")
+        df, df_val, df_acc = train_kfold(
+            model_name, df, df_val, df_acc, class_arr, group_arr
+        )
 
-    dump_data(df, 'models', 'all_results.p')
-    dump_data(df, 'models', 'all_results_df_val.p')
-    dump_data(df, 'models', 'all_results_df_acc.p')
+    dump_data(df, "models", "all_results.p")
+    dump_data(df, "models", "all_results_df_val.p")
+    dump_data(df, "models", "all_results_df_acc.p")
 
 
 if __name__ == "__main__":
