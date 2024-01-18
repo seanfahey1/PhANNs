@@ -98,7 +98,7 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
 
 
 def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
-    for model_number in range(10):
+    for model_number in range(1, 11):
         logging.info(f"Doing cross validation on {model_name} - {model_number}")
 
         train_X, train_Y_index = get_train_data(
