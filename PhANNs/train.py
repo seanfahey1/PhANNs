@@ -209,6 +209,8 @@ def main():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
+    out_dir = config['train'].get('model_dir')
+
     columns = ["model", "class", "score_type", "value"]
     df = pd.DataFrame(columns=columns)
     df_val = pd.DataFrame(columns=columns)
@@ -235,7 +237,7 @@ def main():
     for model_name in all_models:
         logging.info(f"Starting model: {model_name}")
         df, df_val, df_acc = train_kfold(
-            model_name, df, df_val, df_acc, class_arr, group_arr
+            model_name, df, df_val, df_acc, class_arr, group_arr, out_dir
         )
 
     dump_data(df, "models", "all_results.p")
