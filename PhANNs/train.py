@@ -75,6 +75,12 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
         "Others",
         "weighted avg",
     ]
+    print(test_Y_predicted)
+    print(test_Y_index)
+    print(test_Y_index.shape)
+    print(test_Y_predicted.shape)
+    print(np.unique(test_Y_predicted))
+    print(np.unique(test_Y_index))
     report = classification_report(
         test_Y_index, test_Y_predicted, target_names=labels_names, output_dict=True
     )
