@@ -141,9 +141,9 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             verbose=1,
         )
 
-        print(num_classes, train_Y_index)
+        print([x for x in range(1, num_classes + 1)], train_Y_index)
         class_weights = compute_class_weight(
-            "balanced", range(num_classes + 1), train_Y_index
+            "balanced", [x for x in range(1, num_classes + 1)], train_Y_index
         )
 
         train_weights = dict(zip(range(1, num_classes + 1), class_weights))
