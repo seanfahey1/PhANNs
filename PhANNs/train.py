@@ -75,14 +75,9 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
         "Others",
         "weighted avg",
     ]
-    print(test_Y_predicted)
-    print(test_Y_index)
-    print(test_Y_index.shape)
-    print(test_Y_predicted.shape)
-    print(np.unique(test_Y_predicted))
-    print(np.unique(test_Y_index))
+
     report = classification_report(
-        test_Y_index, test_Y_predicted, target_names=labels_names, output_dict=True
+        test_Y_index, test_Y_predicted + 1, target_names=labels_names, output_dict=True
     )
     for label in labels_dataframe:
         score_type = "precision"
@@ -123,7 +118,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         feature_count = train_X.shape[1]
         unique_classes = np.unique(train_Y_index)
         num_classes = len(unique_classes)
-        logging.info(f'{num_classes} unique classes found.')
+        logging.info(f"{num_classes} unique classes found.")
 
         # These arrays basically OHE the class to columns. Instead of a bunch of class numbers, we have an array with a
         # single `1` on each row indicating the class. I subtract 1 from the array to fit into zero indexing.
@@ -131,7 +126,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         test_Y = np.eye(num_classes)[test_Y_index - 1]
 
         logging.info(f"Test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
-        logging.info(f'Train Y values look like: {train_Y.shape}\n{train_Y}')
+        logging.info(f"Train Y values look like: {train_Y.shape}\n{train_Y}")
         es = EarlyStopping(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
         )
@@ -181,7 +176,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         model.compile(
             loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
         )
-        logging.info('Model built. Fitting...')
+        logging.info("Model built. Fitting...")
         history = model.fit(
             train_X,
             train_Y,
@@ -227,7 +222,7 @@ def main():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
-    features_dir = config['load'].get('output_data_dir')
+    features_dir = config["load"].get("output_data_dir")
     out_dir = config["train"].get("model_dir")
     Path(out_dir).mkdir(exist_ok=True, parents=True)
 
