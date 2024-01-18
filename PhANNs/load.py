@@ -164,7 +164,7 @@ def main():
 
     logging.info("Config:")
     for section in config.keys():
-        for k, v in config["section"].items():
+        for k, v in config[section].items():
             logging.info(f"{section}:{k}:{v}")
 
     file_dict = {}
