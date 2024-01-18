@@ -108,17 +108,14 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             model_name, model_number, class_arr, group_arr
         )
 
-        print(train_Y_index)
-        print(test_Y_index)
         feature_count = train_X.shape[1]
         unique_classes = np.unique(train_Y_index)
         num_classes = len(unique_classes)
-        print(num_classes)
 
+        # These arrays basically OHE the class to columns. Instead of a bunch of class numbers, we have an array with a
+        # single `1` on each row indicating the class. I subtract 1 from the array to fit into zero indexing.
         train_Y = np.eye(num_classes)[train_Y_index - 1]
         test_Y = np.eye(num_classes)[test_Y_index - 1]
-        print(train_Y)
-        print(test_Y)
 
         logging.info(f"test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
 
@@ -143,6 +140,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             save_best_only=True,
             verbose=1,
         )
+        print(num_classes, train_Y_index)
         class_weights = compute_class_weight(
             "balanced", range(1, num_classes + 1), train_Y_index
         )
