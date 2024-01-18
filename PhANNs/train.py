@@ -117,6 +117,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         feature_count = train_X.shape[1]
         unique_classes = np.unique(train_Y_index)
         num_classes = len(unique_classes)
+        logging.info(f'{num_classes} unique classes found.')
 
         # These arrays basically OHE the class to columns. Instead of a bunch of class numbers, we have an array with a
         # single `1` on each row indicating the class. I subtract 1 from the array to fit into zero indexing.
@@ -124,7 +125,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         test_Y = np.eye(num_classes)[test_Y_index - 1]
 
         logging.info(f"Test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
-        logging.info(f'Train Y values look like: {train_Y}')
+        logging.info(f'Train Y values look like: {train_Y.shape}\n{train_Y}')
         es = EarlyStopping(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
         )
@@ -188,6 +189,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
 
         logging.info("Fit model. Starting predictions...")
         test_Y_predicted = model.predict_classes(test_X)
+        logging.log(test_Y_predicted)
 
         logging.info("Finished training! Saving models")
         df = add_to_df(df, test_Y_index, test_Y_predicted, model_name)
