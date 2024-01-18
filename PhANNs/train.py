@@ -115,8 +115,11 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         num_classes = len(unique_classes)
         print(num_classes)
 
-        train_Y = np.eye(num_classes)[train_Y_index]
-        test_Y = np.eye(num_classes)[test_Y_index]
+        train_Y = np.eye(num_classes)[train_Y_index - 1]
+        test_Y = np.eye(num_classes)[test_Y_index - 1]
+        print(train_Y)
+        print(test_Y)
+
         logging.info(f"test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
 
         es = EarlyStopping(
