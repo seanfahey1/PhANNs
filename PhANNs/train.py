@@ -108,12 +108,15 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             model_name, model_number, class_arr, group_arr
         )
 
-        f_num = train_X.shape[1]
+        print(train_Y_index)
+        print(test_Y_index)
+        feature_count = train_X.shape[1]
+        unique_classes = np.unique(train_Y_index)
+        num_classes = len(unique_classes)
+        print(num_classes)
 
-        num_of_class = max(train_Y_index)
-
-        train_Y = np.eye(num_of_class)[train_Y_index]
-        test_Y = np.eye(num_of_class)[test_Y_index]
+        train_Y = np.eye(num_classes)[train_Y_index]
+        test_Y = np.eye(num_classes)[test_Y_index]
         logging.info(f"test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
 
         es = EarlyStopping(
@@ -138,18 +141,18 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             verbose=1,
         )
         class_weights = compute_class_weight(
-            "balanced", range(1, num_of_class + 1), train_Y_index
+            "balanced", range(1, num_classes + 1), train_Y_index
         )
 
-        train_weights = dict(zip(range(1, num_of_class + 1), class_weights))
+        train_weights = dict(zip(range(1, num_classes + 1), class_weights))
         logging.info(f"train weights:\n{train_weights}")
 
         model = Sequential()
         opt = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, decay=0.0, amsgrad=False)
         model.add(
             Dense(
-                f_num,
-                input_dim=f_num,
+                feature_count,
+                input_dim=feature_count,
                 kernel_initializer="random_uniform",
                 activation="relu",
             )
@@ -159,7 +162,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         model.add(Dropout(0.2))
         model.add(Dense(200, activation="relu"))
         model.add(Dropout(0.2))
-        model.add(Dense(num_of_class, activation="softmax"))
+        model.add(Dense(num_classes, activation="softmax"))
 
         model.compile(
             loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
