@@ -27,3 +27,6 @@ class_number.TSH = 8
 class_number.CLR = 9
 class_number.HTJ = 10
 class_number.OTH = 11
+
+[train]
+model_dir = 'models'

@@ -159,18 +159,19 @@ def model_specific_arrays(out_dir, z_array, group_array):
 def main():
     logging.info("Starting....")
     config = toml.load("config.toml")
-    out_dir = config["load"].get("output_data_dir")
-    Path(out_dir).mkdir(parents=True, exist_ok=True)
 
     logging.info("Config:")
     for section in config.keys():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
+    out_dir = config["load"].get("output_data_dir")
+    Path(out_dir).mkdir(parents=True, exist_ok=True)
+
     file_dict = {}
     for prefix in config["load"].get("prefixes"):
         for file, cls in config["load"].get("fasta_labels").items():
-            file_name = prefix + file + '.fasta'
+            file_name = prefix + file + ".fasta"
             file_dict[Path(config["load"].get("train_data_dir")) / file_name] = {
                 "class": cls,
                 "number": int(prefix.strip("_")),
@@ -185,9 +186,9 @@ def main():
 
     for file_path, keys in file_dict.items():
         cls, file_number = keys["class"], keys["number"]
-        cls_number = config['load']['class_number'][cls]
+        cls_number = config["load"]["class_number"][cls]
 
-        logging.info(f'file: {file_path.name}, class number: {cls_number}')
+        logging.info(f"file: {file_path.name}, class number: {cls_number}")
 
         for record in SeqIO.parse(file_path, "fasta"):
             sequence = record.seq.__str__().upper()

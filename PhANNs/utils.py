@@ -2,11 +2,11 @@ import pickle as p
 from pathlib import Path
 
 
-def dump_data(array, out_dir, array_name):
+def dump_data(file, out_dir, array_name):
     out_path = Path(out_dir) / array_name
 
     with open(out_path.with_suffix(".p"), "wb") as out:
-        p.dump(array, out, protocol=4)
+        p.dump(file, out, protocol=4)
 
 
 def load_data(file_dir, file_name):
