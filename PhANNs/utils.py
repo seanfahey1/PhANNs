@@ -12,7 +12,7 @@ def dump_data(array, out_dir, array_name):
 def load_data(file_dir, file_name):
     path = Path(file_dir) / file_name
 
-    with open(path, 'rb') as file:
+    with open(path, "rb") as file:
         contents = p.load(file)
 
     return contents

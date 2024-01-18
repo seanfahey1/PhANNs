@@ -1,17 +1,15 @@
-import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Activation
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras import backend as K
-import pickle as p
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.callbacks import ModelCheckpoint
-from sklearn.metrics import classification_report
 import os
+import pickle as p
+
+import numpy as np
+from sklearn.metrics import classification_report
 from sklearn.utils.class_weight import compute_class_weight
-from tensorflow.keras.models import load_model
+from tensorflow.keras import backend as K
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.layers import Activation, Dense, Dropout
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.optimizers import Adam
+
 from utils import load_data
 
 

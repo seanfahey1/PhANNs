@@ -1,6 +1,6 @@
 import itertools
 import logging
-import pickle as p
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -10,7 +10,6 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 
 from utils import dump_data
-
 
 FORMAT = "%(asctime)-24s | %(message)s"
 logging.basicConfig(filename="load.log", level=logging.INFO, format=FORMAT)
@@ -216,3 +215,7 @@ def main():
 
     logging.info("Writing model specific arrays to disk")
     model_specific_arrays(out_dir, arr_z, data.group_arr)
+
+
+if __name__ == "__main__":
+    sys.exit(main)
