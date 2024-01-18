@@ -90,9 +90,9 @@ class Data:
 
         return row
 
-    def add_to_array(self, row, row_num, cls, group):
+    def add_to_array(self, row, row_num, cls_number, group):
         self.arr[row_num, :] = row
-        self.class_arr[row_num] = cls
+        self.class_arr[row_num] = cls_number
         self.group_arr[row_num] = group
         self.id_arr[row_num] = row_num
 
@@ -184,14 +184,16 @@ def main():
 
     for file_path, keys in file_dict.items():
         cls, file_number = keys["class"], keys["number"]
+        cls_number = config['class_number'][cls]
 
-        logging.info(file_path.name)
+        logging.info(f'file: {file_path.name}, class number: {cls_number}')
+
         row_counter = 0
 
         for record in SeqIO.parse(file_path, "fasta"):
             sequence = record.seq.__str__().upper()
             row = data.feature_extract(sequence)
-            data.add_to_array(row, row_counter, cls, file_number)
+            data.add_to_array(row, row_counter, cls_number, file_number)
             row_counter += 1
 
         logging.info(f"Finished file {file_path.stem}. Current row: {row_counter}")

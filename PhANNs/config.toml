@@ -15,3 +15,15 @@ fasta_labels.others = 'OTH'
 
 train_data_dir = 'dataset'
 output_data_dir = 'features'
+
+class_number.MCP = 1
+class_number.m_CP = 2
+class_number.BPL = 3
+class_number.MTL = 4
+class_number.m_TL = 5
+class_number.PTL = 6
+class_number.TFR = 7
+class_number.TSH = 8
+class_number.CLR = 9
+class_number.HTJ = 10
+class_number.OTH = 11
