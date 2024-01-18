@@ -28,7 +28,7 @@ from Bio import SeqIO
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 from Bio.Alphabet import IUPAC
-#from itertools import permutations
+from itertools import permutations
 import pandas as pd
 import pickle
 
