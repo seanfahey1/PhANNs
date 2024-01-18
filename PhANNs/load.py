@@ -170,7 +170,7 @@ def main():
     file_dict = {}
     for prefix in config["load"].get("prefixes"):
         for file, cls in config["load"].get("fasta_labels").items():
-            file_name = prefix + file
+            file_name = prefix + file + '.fasta'
             file_dict[Path(config["load"].get("train_data_dir")) / file_name] = {
                 "class": cls,
                 "number": int(prefix.strip("_")),
