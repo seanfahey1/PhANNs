@@ -181,14 +181,13 @@ def main():
     logging.info(f"Found {num_proteins} protein sequences")
 
     data = Data(num_proteins)
+    row_counter = 0
 
     for file_path, keys in file_dict.items():
         cls, file_number = keys["class"], keys["number"]
         cls_number = config['load']['class_number'][cls]
 
         logging.info(f'file: {file_path.name}, class number: {cls_number}')
-
-        row_counter = 0
 
         for record in SeqIO.parse(file_path, "fasta"):
             sequence = record.seq.__str__().upper()
