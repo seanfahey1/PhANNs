@@ -145,7 +145,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             "balanced", range(num_classes), train_Y_index - 1
         )
 
-        train_weights = dict(zip(range(1, num_classes + 1), class_weights))
+        train_weights = dict(zip(range(num_classes), class_weights))
         logging.info(f"Train weights:\n{train_weights}")
 
         model = Sequential()
