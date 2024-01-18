@@ -1,17 +1,17 @@
 [load]
 prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_']
-fasta_labels = {
-    major_capsid = 'MCP',
-    minor_capsid = 'm_CP',
-    baseplate = 'BPL',
-    major_tail = 'MTL',
-    minor_tail = 'm_TL',
-    portal = 'PTL',
-    tail_fiber = 'TFR',
-    shaft = 'TSH',
-    collar = 'CLR',
-    HTJ = 'HTJ',
-    others = 'OTH'
- }
+
+fasta_labels.major_capsid = 'MCP'
+fasta_labels.minor_capsid = 'm_CP'
+fasta_labels.baseplate = 'BPL'
+fasta_labels.major_tail = 'MTL'
+fasta_labels.minor_tail = 'm_TL'
+fasta_labels.portal = 'PTL'
+fasta_labels.tail_fiber = 'TFR'
+fasta_labels.shaft = 'TSH'
+fasta_labels.collar = 'CLR'
+fasta_labels.HTJ = 'HTJ'
+fasta_labels.others = 'OTH'
+
 train_data_dir = 'dataset'
 output_data_dir = 'features'
