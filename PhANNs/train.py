@@ -137,7 +137,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
             save_best_only=True,
             verbose=1,
         )
-
+        print(np.unique(train_Y_index))
         class_weights = compute_class_weight(
             "balanced", range(1, num_of_class + 1), train_Y_index
         )
