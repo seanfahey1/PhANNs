@@ -84,16 +84,22 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
         df = df.append(
             pd.Series(data_row, index=df.columns), sort=False, ignore_index=True
         )
+        logging.info(score_type, data_row)
+
         score_type = "recall"
         data_row = [model_name, label, score_type, report[label][score_type]]
         df = df.append(
             pd.Series(data_row, index=df.columns), sort=False, ignore_index=True
         )
+        logging.info(score_type, data_row)
+
         score_type = "f1-score"
         data_row = [model_name, label, score_type, report[label][score_type]]
         df = df.append(
             pd.Series(data_row, index=df.columns), sort=False, ignore_index=True
         )
+        logging.info(score_type, data_row)
+
     return df
 
 
@@ -213,7 +219,9 @@ def main():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
+    features_dir = config['load'].get('output_data_dir')
     out_dir = config["train"].get("model_dir")
+    Path(out_dir).mkdir(exist_ok=True, parents=True)
 
     columns = ["model", "class", "score_type", "value"]
     df = pd.DataFrame(columns=columns)
@@ -235,8 +243,8 @@ def main():
         "all",
     ]
 
-    group_arr = load_data("features", "group_arr.p")
-    class_arr = load_data("features", "class_arr.p")
+    group_arr = load_data(features_dir, "group_arr.p")
+    class_arr = load_data(features_dir, "class_arr.p")
 
     for model_name in all_models:
         logging.info(f"Starting model: {model_name}")
@@ -244,9 +252,9 @@ def main():
             model_name, df, df_val, df_acc, class_arr, group_arr, out_dir
         )
 
-    dump_data(df, "models", "all_results.p")
-    dump_data(df, "models", "all_results_df_val.p")
-    dump_data(df, "models", "all_results_df_acc.p")
+    dump_data(df, out_dir, "all_results.p")
+    dump_data(df, out_dir, "all_results_df_val.p")
+    dump_data(df, out_dir, "all_results_df_acc.p")
 
 
 if __name__ == "__main__":
