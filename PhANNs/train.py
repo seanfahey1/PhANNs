@@ -189,7 +189,7 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
 
         logging.info("Fit model. Starting predictions...")
         test_Y_predicted = model.predict_classes(test_X)
-        logging.log(test_Y_predicted)
+        logging.info(test_Y_predicted)
 
         logging.info("Finished training! Saving models")
         df = add_to_df(df, test_Y_index, test_Y_predicted, model_name)
