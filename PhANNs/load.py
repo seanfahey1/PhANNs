@@ -184,7 +184,7 @@ def main():
 
     for file_path, keys in file_dict.items():
         cls, file_number = keys["class"], keys["number"]
-        cls_number = config['class_number'][cls]
+        cls_number = config['load']['class_number'][cls]
 
         logging.info(f'file: {file_path.name}, class number: {cls_number}')
 
