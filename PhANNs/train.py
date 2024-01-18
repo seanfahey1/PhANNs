@@ -139,10 +139,10 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         )
 
         class_weights = compute_class_weight(
-            "balanced", range(num_of_class), train_Y_index
+            "balanced", range(1, num_of_class + 1), train_Y_index
         )
 
-        train_weights = dict(zip(range(num_of_class), class_weights))
+        train_weights = dict(zip(range(1, num_of_class + 1), class_weights))
         logging.info(f"train weights:\n{train_weights}")
 
         model = Sequential()
@@ -209,7 +209,7 @@ def main():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
-    out_dir = config['train'].get('model_dir')
+    out_dir = config["train"].get("model_dir")
 
     columns = ["model", "class", "score_type", "value"]
     df = pd.DataFrame(columns=columns)
