@@ -250,6 +250,7 @@ def main():
     group_arr = load_data(features_dir, "group_arr.p")
     class_arr = load_data(features_dir, "class_arr.p")
 
+    # TODO: select models to train based on config file
     for model_name in all_models:
         logging.info("_\|/_" * 16)
         logging.info(f"STARTING NEW MODEL: {model_name}")

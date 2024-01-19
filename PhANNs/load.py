@@ -148,6 +148,7 @@ def model_specific_arrays(out_dir, z_array, group_array):
         "all": all_range,
     }
 
+    # TODO: select models based on config file
     for group in np.unique(group_array):
         for name in model_ranges.keys():
             z_array_single_group = z_array[(group_array == group),]
