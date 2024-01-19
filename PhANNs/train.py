@@ -224,18 +224,7 @@ def main():
     df_acc = pd.DataFrame(columns=columns)
 
     all_models = [
-        "di_sc",
-        "di_sc_p",
-        "tri_sc",
-        "tri_sc_p",
-        "tetra_sc",
-        "tetra_sc_p",
-        "di",
-        "di_p",
-        "tri",
-        "tri_p",
-        "tetra_sc_tri_p",
-        "all",
+        model for model, value in config["train"].get("models").items() if value
     ]
 
     group_arr = load_data(features_dir, "group_arr.p")
