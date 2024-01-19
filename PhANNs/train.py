@@ -51,39 +51,14 @@ def get_test_data(model_name, class_arr, group_arr):
     return test_data, y
 
 
-def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
-    labels_names = [
-        "Major capsid",
-        "Minor capsid",
-        "Baseplate",
-        "Major tail",
-        "Minor tail",
-        "Portal",
-        "Tail fiber",
-        "Tail shaft",
-        "Collar",
-        "Head-Tail joining",
-        "Others",
-    ]
-    labels_dataframe = [
-        "Major capsid",
-        "Minor capsid",
-        "Baseplate",
-        "Major tail",
-        "Minor tail",
-        "Portal",
-        "Tail fiber",
-        "Tail shaft",
-        "Collar",
-        "Head-Tail joining",
-        "Others",
-        "weighted avg",
-    ]
+def add_to_df(df, test_Y_index, test_Y_predicted, model_name, class_numbers):
+    label_names = sorted(class_numbers, key=class_numbers.get)
+    df_label_names = label_names + ["weighted avg"]
 
     report = classification_report(
-        test_Y_index, test_Y_predicted + 1, target_names=labels_names, output_dict=True
+        test_Y_index, test_Y_predicted + 1, target_names=label_names, output_dict=True
     )
-    for label in labels_dataframe:
+    for label in df_label_names:
         score_type = "precision"
         data_row = [model_name, label, score_type, report[label][score_type]]
         df = df.append(
@@ -108,7 +83,9 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
     return df
 
 
-def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
+def train_kfold(
+    model_name, df, df_val, df_acc, class_numbers, class_arr, group_arr, out_dir
+):
     for model_number in range(1, 11):
         logging.info("-" * 80)
         logging.warning(f"Doing cross validation on {model_name} - {model_number}")
@@ -198,20 +175,24 @@ def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
         logging.info(test_Y_predicted)
 
         logging.info("Finished training! Saving models")
-        df = add_to_df(df, test_Y_index, test_Y_predicted, model_name)
+        df = add_to_df(df, test_Y_index, test_Y_predicted, model_name, class_numbers)
         model.save(Path(out_dir) / f'{model_name}_{"{:02d}".format(model_number)}.h5')
 
         model_val = load_model(
             Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
         )
         test_Y_predicted_val = model_val.predict_classes(test_X)
-        df_val = add_to_df(df_val, test_Y_index, test_Y_predicted_val, model_name)
+        df_val = add_to_df(
+            df_val, test_Y_index, test_Y_predicted_val, model_name, class_numbers
+        )
 
         model_acc = load_model(
             Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5'
         )
         test_Y_predicted_acc = model_acc.predict_classes(test_X)
-        df_acc = add_to_df(df_acc, test_Y_index, test_Y_predicted_acc, model_name)
+        df_acc = add_to_df(
+            df_acc, test_Y_index, test_Y_predicted_acc, model_name, class_numbers
+        )
 
         K.clear_session()
 
@@ -234,6 +215,8 @@ def main():
         "model_dir"
     )
     out_dir.mkdir(exist_ok=True, parents=True)
+
+    class_numbers = config["load"]["class_number"]
 
     columns = ["model", "class", "score_type", "value"]
     df = pd.DataFrame(columns=columns)
@@ -263,7 +246,7 @@ def main():
         logging.info("_\|/_" * 16)
         logging.warning(f"STARTING NEW MODEL: {model_name}")
         df, df_val, df_acc = train_kfold(
-            model_name, df, df_val, df_acc, class_arr, group_arr, out_dir
+            model_name, df, df_val, df_acc, class_numbers, class_arr, group_arr, out_dir
         )
 
     dump_data(df, out_dir, "all_results.p")
