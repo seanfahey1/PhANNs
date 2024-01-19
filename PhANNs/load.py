@@ -1,6 +1,7 @@
 import itertools
 import logging
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -8,11 +9,14 @@ import toml
 from Bio import SeqIO
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
-
 from utils import dump_data
 
 FORMAT = "%(asctime)-24s | %(message)s"
-logging.basicConfig(filename="load.log", level=logging.INFO, format=FORMAT)
+logging.basicConfig(
+    filename=f'load_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
+    level=logging.INFO,
+    format=FORMAT,
+)
 
 
 class Data:
@@ -166,14 +170,20 @@ def main():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
-    out_dir = config["load"].get("output_data_dir")
+    out_dir = Path(config["main"].get("project_root_dir")) / config["load"].get(
+        "output_data_dir"
+    )
     Path(out_dir).mkdir(parents=True, exist_ok=True)
 
     file_dict = {}
     for prefix in config["load"].get("prefixes"):
         for file, cls in config["load"].get("fasta_labels").items():
             file_name = prefix + file + ".fasta"
-            file_dict[Path(config["load"].get("train_data_dir")) / file_name] = {
+            file_dict[
+                Path(config["main"].get("project_root_dir"))
+                / config["load"].get("train_data_dir")
+                / file_name
+            ] = {
                 "class": cls,
                 "number": int(prefix.strip("_")),
                 "group": prefix.strip("_"),

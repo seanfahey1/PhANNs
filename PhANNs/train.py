@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -13,11 +14,14 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.layers import Activation, Dense, Dropout
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.optimizers import Adam
-
 from utils import dump_data, load_data
 
 FORMAT = "%(asctime)-24s | %(message)s"
-logging.basicConfig(filename="train.log", level=logging.INFO, format=FORMAT)
+logging.basicConfig(
+    filename=f'train_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
+    level=logging.INFO,
+    format=FORMAT,
+)
 
 
 def get_train_data(model_name, model_number, class_arr, group_arr):
@@ -223,9 +227,13 @@ def main():
         for k, v in config[section].items():
             logging.info(f"\t{section}:{k}:{v}")
 
-    features_dir = config["load"].get("output_data_dir")
-    out_dir = config["train"].get("model_dir")
-    Path(out_dir).mkdir(exist_ok=True, parents=True)
+    features_dir = Path(config["main"].get("project_root_dir")) / config["load"].get(
+        "output_data_dir"
+    )
+    out_dir = Path(config["main"].get("project_root_dir")) / config["train"].get(
+        "model_dir"
+    )
+    out_dir.mkdir(exist_ok=True, parents=True)
 
     columns = ["model", "class", "score_type", "value"]
     df = pd.DataFrame(columns=columns)
