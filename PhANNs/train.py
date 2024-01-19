@@ -111,7 +111,7 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name):
 def train_kfold(model_name, df, df_val, df_acc, class_arr, group_arr, out_dir):
     for model_number in range(1, 11):
         logging.info("-" * 80)
-        logging.info(f"Doing cross validation on {model_name} - {model_number}")
+        logging.warning(f"Doing cross validation on {model_name} - {model_number}")
 
         train_X, train_Y_index = get_train_data(
             model_name, model_number, class_arr, group_arr
@@ -261,7 +261,7 @@ def main():
     # TODO: select models to train based on config file
     for model_name in all_models:
         logging.info("_\|/_" * 16)
-        logging.info(f"STARTING NEW MODEL: {model_name}")
+        logging.warning(f"STARTING NEW MODEL: {model_name}")
         df, df_val, df_acc = train_kfold(
             model_name, df, df_val, df_acc, class_arr, group_arr, out_dir
         )
