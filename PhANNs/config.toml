@@ -2,7 +2,7 @@
 project_root_dir = 'michelle_classes'
 
 [load]
-prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_']
+prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_' ]
 train_data_dir = 'dataset_michelle_classes'
 output_data_dir = 'features_michelle_classes'
 
@@ -50,3 +50,6 @@ tri = true
 tri_p = true
 tetra_sc_tri_p = true
 all = true
+
+[test]
+model = 'all'

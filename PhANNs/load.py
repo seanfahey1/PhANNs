@@ -11,6 +11,7 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 from scipy import stats
 from utils import dump_data
 
+# TODO: add level to log
 FORMAT = "%(asctime)-24s | %(message)s"
 logging.basicConfig(
     filename=f'load_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
