@@ -94,15 +94,21 @@ def train_kfold(
         es = EarlyStopping(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
         )
+        val_model_path = (
+            Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
+        )
         mc = ModelCheckpoint(
-            Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5',
+            val_model_path,
             monitor="val_loss",
             mode="min",
             save_best_only=True,
             verbose=1,
         )
+        acc_model_path = (
+            Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5'
+        )
         mc2 = ModelCheckpoint(
-            Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5',
+            acc_model_path,
             monitor="val_accuracy",
             mode="max",
             save_best_only=True,
