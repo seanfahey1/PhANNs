@@ -162,7 +162,11 @@ def train_kfold(
 
         logging.info("Finished training! Saving models")
         df = add_to_df(df, test_Y_index, test_Y_predicted, model_name, class_numbers)
-        model.save(Path(out_dir) / f'{model_name}_{"{:02d}".format(model_number)}.h5')
+
+        model_path = (
+            Path(out_dir) / f'{model_name}_{"{:02d}".format(model_number)}.h5'
+        ).resolve()
+        model.save(model_path)
 
         model_val = load_model(
             Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
