@@ -94,9 +94,10 @@ def train_kfold(
         es = EarlyStopping(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
         )
+
         val_model_path = (
             Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
-        )
+        ).resolve()
         mc = ModelCheckpoint(
             val_model_path,
             monitor="val_loss",
@@ -104,9 +105,10 @@ def train_kfold(
             save_best_only=True,
             verbose=1,
         )
+
         acc_model_path = (
             Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5'
-        )
+        ).resolve()
         mc2 = ModelCheckpoint(
             acc_model_path,
             monitor="val_accuracy",
