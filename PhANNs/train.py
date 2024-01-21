@@ -95,18 +95,14 @@ def train_kfold(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
         )
         mc = ModelCheckpoint(
-            os.path.join(
-                "models", model_name + "_val_" + "{:02d}".format(model_number) + ".h5"
-            ),
+            Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5',
             monitor="val_loss",
             mode="min",
             save_best_only=True,
             verbose=1,
         )
         mc2 = ModelCheckpoint(
-            os.path.join(
-                "models", model_name + "_acc_" + "{:02d}".format(model_number) + ".h5"
-            ),
+            Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5',
             monitor="val_accuracy",
             mode="max",
             save_best_only=True,
