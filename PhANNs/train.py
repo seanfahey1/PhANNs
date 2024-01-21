@@ -168,17 +168,13 @@ def train_kfold(
         ).resolve()
         model.save(model_path)
 
-        model_val = load_model(
-            Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
-        )
+        model_val = load_model(val_model_path)
         test_Y_predicted_val = model_val.predict_classes(test_X)
         df_val = add_to_df(
             df_val, test_Y_index, test_Y_predicted_val, model_name, class_numbers
         )
 
-        model_acc = load_model(
-            Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5'
-        )
+        model_acc = load_model(acc_model_path)
         test_Y_predicted_acc = model_acc.predict_classes(test_X)
         df_acc = add_to_df(
             df_acc, test_Y_index, test_Y_predicted_acc, model_name, class_numbers
