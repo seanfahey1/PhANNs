@@ -57,17 +57,28 @@ def add_to_df(df, test_Y_index, test_Y_predicted, model_name, class_numbers):
 
 
 def train_kfold(
-    model_name, df, df_val, df_acc, class_numbers, class_arr, group_arr, out_dir
+    model_name,
+    features_dir,
+    df,
+    df_val,
+    df_acc,
+    class_numbers,
+    class_arr,
+    group_arr,
+    out_dir,
 ):
     for model_number in range(1, 11):
         logging.info("-" * 80)
         logging.warning(f"Doing cross validation on {model_name} - {model_number}")
 
         train_X, train_Y_index = get_train_data(
-            model_name, model_number, class_arr, group_arr
+            features_dir,
+            model_name,
+            model_number,
+            class_arr,
         )
         test_X, test_Y_index = get_validation_data(
-            model_name, model_number, class_arr, group_arr
+            features_dir, model_name, model_number, class_arr, group_arr
         )
 
         feature_count = train_X.shape[1]
@@ -81,6 +92,7 @@ def train_kfold(
         test_Y = np.eye(num_classes)[test_Y_index - 1]
 
         logging.info(f"Test x shape: {test_X.shape}, test y shape: {test_Y.shape}")
+        logging.info(f"Train x shape: {train_X.shape}, train y shape: {train_Y.shape}")
         logging.info(f"Train Y values look like: {train_Y.shape}\n{train_Y}")
         es = EarlyStopping(
             monitor="loss", mode="min", verbose=2, patience=5, min_delta=0.02
@@ -208,7 +220,15 @@ def main():
         logging.info("_\|/_" * 16)
         logging.warning(f"STARTING NEW MODEL: {model_name}")
         df, df_val, df_acc = train_kfold(
-            model_name, df, df_val, df_acc, class_numbers, class_arr, group_arr, out_dir
+            model_name,
+            features_dir,
+            df,
+            df_val,
+            df_acc,
+            class_numbers,
+            class_arr,
+            group_arr,
+            out_dir,
         )
 
     dump_data(df, out_dir, "all_results.p")

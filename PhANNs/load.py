@@ -155,9 +155,9 @@ def model_specific_arrays(out_dir, z_array, group_array):
 
     # TODO: select models based on config file
     for group in np.unique(group_array):
-        for name in model_ranges.keys():
+        for name, model_range in model_ranges.items():
             z_array_single_group = z_array[(group_array == group),]
-            z_array_current_model = z_array_single_group[:, model_ranges[name]]
+            z_array_current_model = z_array_single_group[:, model_range]
 
             dump_data(z_array_current_model, out_dir, f"{group}_{name}.p")
 
@@ -186,8 +186,7 @@ def main():
                 / file_name
             ] = {
                 "class": cls,
-                "number": int(prefix.strip("_")),
-                "group": prefix.strip("_"),
+                "group": int(prefix.strip("_")),
             }
 
     num_proteins = fasta_count(file_dict.keys())
@@ -197,7 +196,7 @@ def main():
     row_counter = 0
 
     for file_path, keys in file_dict.items():
-        cls, file_number = keys["class"], keys["number"]
+        cls, group_number = keys["class"], keys["group"]
         cls_number = config["load"]["class_number"][cls]
 
         logging.info(f"file: {file_path.name}, class number: {cls_number}")
@@ -205,7 +204,7 @@ def main():
         for record in SeqIO.parse(file_path, "fasta"):
             sequence = record.seq.__str__().upper()
             row = data.feature_extract(sequence)
-            data.add_to_array(row, row_counter, cls_number, file_number)
+            data.add_to_array(row, row_counter, cls_number, group_number)
             row_counter += 1
 
         logging.info(f"Finished file {file_path.stem}. Current row: {row_counter}")
