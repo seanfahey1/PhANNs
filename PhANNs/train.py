@@ -72,10 +72,7 @@ def train_kfold(
         logging.warning(f"Doing cross validation on {model_name} - {model_number}")
 
         train_X, train_Y_index = get_train_data(
-            features_dir,
-            model_name,
-            model_number,
-            class_arr,
+            features_dir, model_name, model_number, class_arr, group_arr
         )
         test_X, test_Y_index = get_validation_data(
             features_dir, model_name, model_number, class_arr, group_arr
