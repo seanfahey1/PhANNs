@@ -96,8 +96,10 @@ def train_kfold(
         )
 
         val_model_path = (
-            Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5'
-        ).resolve()
+            (Path(out_dir) / f'{model_name}_val_{"{:02d}".format(model_number)}.h5')
+            .resolve()
+            .__str__()
+        )
         mc = ModelCheckpoint(
             val_model_path,
             monitor="val_loss",
@@ -107,8 +109,10 @@ def train_kfold(
         )
 
         acc_model_path = (
-            Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5'
-        ).resolve()
+            (Path(out_dir) / f'{model_name}_acc_{"{:02d}".format(model_number)}.h5')
+            .resolve()
+            .__str__()
+        )
         mc2 = ModelCheckpoint(
             acc_model_path,
             monitor="val_accuracy",
@@ -164,8 +168,10 @@ def train_kfold(
         df = add_to_df(df, test_Y_index, test_Y_predicted, model_name, class_numbers)
 
         model_path = (
-            Path(out_dir) / f'{model_name}_{"{:02d}".format(model_number)}.h5'
-        ).resolve()
+            (Path(out_dir) / f'{model_name}_{"{:02d}".format(model_number)}.h5')
+            .resolve()
+            .__str__()
+        )
         model.save(model_path)
 
         model_val = load_model(val_model_path)
