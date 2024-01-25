@@ -3,53 +3,51 @@ project_root_dir = 'michelle_classes'
 
 [load]
 prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_' ]
-train_data_dir = 'dataset_michelle_classes'
-output_data_dir = 'features_michelle_classes'
+train_data_dir = 'dataset'
+output_data_dir = 'features'
 
 [load.fasta_labels]
 baseplate = 'BPL'
-baseplate_upper = 'BPU'
-collar_tail_fiber = 'CTF'
 HTJ = 'HTJ'
-HTJ_connector = 'HTC'
-major_capsid = 'MCP'
 major_tail = 'MTL'
 minor_tail = 'm_TL'
 portal = 'PTL'
+tail_fiber = 'TFR'
+collar = 'CLR'
+major_capsid = 'MCP'
+minor_capsid = 'm_CP'
 shaft = 'TSH'
-tail_spike = 'TSP'
-other = 'OTH'
+others = 'OTH'
 
 [load.class_number]
-BPL = 1
-BPU = 2
-CTF = 3
-HTJ = 4
-HTC = 5
-MCP = 6
-MTL = 7
-m_TL = 8
-PTL = 9
-TSH = 10
-TSP = 11
-OTH = 12
+MCP = 1
+m_CP = 2
+BPL = 3
+MTL = 4
+m_TL = 5
+PTL = 6
+TFR = 7
+TSH = 8
+CLR = 9
+HTJ = 10
+OTH = 11
 
 [train]
-model_dir = 'models_michelle_classes'
+model_dir = 'models'
 
 [train.models]
 di_sc = true
-di_sc_p = true
-tri_sc = true
-tri_sc_p = true
-tetra_sc = true
-tetra_sc_p = true
-di = true
-di_p = true
-tri = true
-tri_p = true
-tetra_sc_tri_p = true
-all = true
+di_sc_p = false
+tri_sc = false
+tri_sc_p = false
+tetra_sc = false
+tetra_sc_p = false
+di = false
+di_p = false
+tri = false
+tri_p = false
+tetra_sc_tri_p = false
+all = false
 
 [test]
 model = 'all'

@@ -1,3 +1,4 @@
+import logging
 import pickle as p
 from pathlib import Path
 
@@ -6,6 +7,7 @@ import numpy as np
 
 def dump_data(file, out_dir, array_name):
     out_path = Path(out_dir) / array_name
+    logging.info(f"Writing pickle object to: {str(out_dir)}")
 
     with open(out_path.with_suffix(".p"), "wb") as out:
         p.dump(file, out, protocol=4)
@@ -13,6 +15,7 @@ def dump_data(file, out_dir, array_name):
 
 def load_data(file_dir, file_name):
     path = Path(file_dir) / file_name
+    logging.info(f"Opening file at: {str(path)}")
 
     with open(path, "rb") as file:
         contents = p.load(file)
