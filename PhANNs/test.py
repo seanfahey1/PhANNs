@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 from tensorflow.keras.models import load_model
 from utils import get_test_data, load_data
 
-FORMAT = "%(asctime)-24s | %(message)s"
+FORMAT = "%(asctime)-24s %(levelname)-8s | %(message)s"
 logging.basicConfig(
     filename=f'train_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
     level=logging.INFO,

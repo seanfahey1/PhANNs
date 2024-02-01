@@ -16,7 +16,7 @@ from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.optimizers import Adam
 from utils import dump_data, get_train_data, get_validation_data, load_data
 
-FORMAT = "%(asctime)-24s | %(message)s"
+FORMAT = "%(asctime)-24s %(levelname)-8s | %(message)s"
 logging.basicConfig(
     filename=f'train_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
     level=logging.INFO,
