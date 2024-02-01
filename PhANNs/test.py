@@ -49,7 +49,10 @@ def main():
     model_dir = Path(config["main"].get("project_root_dir")) / config["train"].get(
         "model_dir"
     )
-    group_arr, class_arr = get_data(model_dir)
+    feature_dir = Path(config["main"].get("project_root_dir")) / config["load"].get(
+        "output_data_dir"
+    )
+    group_arr, class_arr = get_data(feature_dir)
 
     class_numbers = config["load"]["class_number"]
     label_names = sorted(class_numbers, key=class_numbers.get)
