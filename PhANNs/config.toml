@@ -33,7 +33,7 @@ HTJ = 10
 OTH = 11
 
 [train]
-model_dir = 'models'
+model_dir = 'gmodels_michelle_classes/'
 
 [train.models]
 di_sc = true
