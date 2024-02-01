@@ -27,7 +27,9 @@ def get_data(model_dir):
 def predict(model_dir, model_name, test_X):
     y_hats = []
     for model_number in range(1, 11):
-        model = load_model(model_dir / f"{model_name}_{':02d'.format(model_number)}.h5")
+        model_path = model_dir / f"{model_name}_{':02d'.format(model_number)}.h5"
+        print(model_path)
+        model = load_model(model_path)
 
         y_hat = model.predict(test_X, verbose=2)
         y_hats.append(y_hat)
