@@ -63,21 +63,19 @@ def main():
     test_X, test_Y = get_test_data(features_dir, model_name, class_arr, group_arr)
     y_hats = predict(model_dir, model_name, test_X)
 
-    logging.info(f"{test_Y}")
-
     predicted_Y = np.sum(y_hats, axis=0)
     predicted_Y_index = np.argmax(predicted_Y, axis=1)
-
-    predicted_Y.tofile("pred_Y.csv", sep=",")
+    # indices as 0 indexed but class numbers start at 1
+    predicted_Y_class_id = predicted_Y_index + 1
 
     logging.info("Predictions (Y):")
     logging.info(predicted_Y)
 
     logging.info("Predictions (y-index)")
-    logging.info(predicted_Y_index)
+    logging.info(predicted_Y_class_id.tolist())
 
     classification = classification_report(
-        test_Y, predicted_Y_index, target_names=label_names
+        test_Y, predicted_Y_class_id, target_names=label_names
     )
     logging.info("Classification Report:")
     logging.info(classification)
