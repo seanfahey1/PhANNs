@@ -63,8 +63,18 @@ def main():
     test_X, test_Y = get_test_data(features_dir, model_name, class_arr, group_arr)
     y_hats = predict(model_dir, model_name, test_X)
 
+    logging.info(f"{test_Y}")
+
     predicted_Y = np.sum(y_hats, axis=0)
     predicted_Y_index = np.argmax(predicted_Y, axis=1)
+
+    predicted_Y.tofile("pred_Y.csv", sep=",")
+
+    logging.info("Predictions (Y):")
+    logging.info(predicted_Y)
+
+    logging.info("Predictions (y-index)")
+    logging.info(predicted_Y_index)
 
     classification = classification_report(
         test_Y, predicted_Y_index, target_names=label_names
@@ -72,11 +82,6 @@ def main():
     logging.info("Classification Report:")
     logging.info(classification)
 
-    logging.info("Predictions (Y):")
-    logging.info(predicted_Y)
-
-    logging.info("Predictions (y-index)")
-    logging.info(predicted_Y_index)
     # TODO: These outputs need to be saved somehow. Also add that path to the config object.
 
 
