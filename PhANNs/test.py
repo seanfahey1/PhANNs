@@ -11,7 +11,7 @@ from utils import get_test_data, load_data
 
 FORMAT = "%(asctime)-24s %(levelname)-8s | %(message)s"
 logging.basicConfig(
-    filename=f'train_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
+    filename=f'test_{datetime.now().strftime("%Y_%m_%d_%H:%M")}.log',
     level=logging.INFO,
     format=FORMAT,
 )
@@ -27,8 +27,9 @@ def get_data(model_dir):
 def predict(model_dir, model_name, test_X):
     y_hats = []
     for model_number in range(1, 11):
-        model_path = model_dir / f"{model_name}_{'{:02d}'.format(model_number)}.h5"
-        print(model_path)
+        model_full_name = f"{model_name}_{'{:02d}'.format(model_number)}.h5"
+        model_path = model_dir / model_full_name
+        logging.info(f"Running predictions on model {model_full_name}")
         model = load_model(model_path)
 
         y_hat = model.predict(test_X, verbose=2)
@@ -68,9 +69,13 @@ def main():
     classification = classification_report(
         test_Y, predicted_Y_index, target_names=label_names
     )
+    logging.info("Classification Report:")
     logging.info(classification)
 
+    logging.info("Predictions (Y):")
     logging.info(predicted_Y)
+
+    logging.info("Predictions (y-index)")
     logging.info(predicted_Y_index)
     # TODO: These outputs need to be saved somehow. Also add that path to the config object.
 

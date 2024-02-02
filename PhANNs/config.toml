@@ -20,17 +20,18 @@ shaft = 'TSH'
 others = 'OTH'
 
 [load.class_number]
-MCP = 1
-m_CP = 2
-BPL = 3
-MTL = 4
-m_TL = 5
-PTL = 6
-TFR = 7
-TSH = 8
-CLR = 9
-HTJ = 10
-OTH = 11
+BPL = 1
+BPU = 2
+CTF = 3
+HTJ = 4
+HTC = 5
+MCP = 6
+MTL = 7
+m_TL = 8
+PTL = 9
+TSH = 10
+TSP = 11
+OTH = 12
 
 [train]
 model_dir = 'models_michelle_classes/'
