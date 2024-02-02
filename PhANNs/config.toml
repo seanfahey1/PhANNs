@@ -1,10 +1,10 @@
 [main]
-project_root_dir = 'michelle_classes'
+project_root_dir = '.'
 
 [load]
 prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_' ]
 train_data_dir = 'dataset'
-output_data_dir = 'features_michelle_classes'
+output_data_dir = 'features'
 
 [load.fasta_labels]
 baseplate = 'BPL'
@@ -20,24 +20,23 @@ shaft = 'TSH'
 others = 'OTH'
 
 [load.class_number]
-BPL = 1
-BPU = 2
-CTF = 3
-HTJ = 4
-HTC = 5
-MCP = 6
-MTL = 7
-m_TL = 8
-PTL = 9
-TSH = 10
-TSP = 11
-OTH = 12
+MCP = 1
+m_CP = 2
+BPL = 3
+MTL = 4
+m_TL = 5
+PTL = 6
+TFR = 7
+TSH = 8
+CLR = 9
+HTJ = 10
+OTH = 11
 
 [train]
-model_dir = 'models_michelle_classes/'
+model_dir = 'models/'
 
 [train.models]
-di_sc = true
+di_sc = false
 di_sc_p = false
 tri_sc = false
 tri_sc_p = false
