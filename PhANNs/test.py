@@ -68,17 +68,10 @@ def main():
     # indices as 0 indexed but class numbers start at 1
     predicted_Y_class_id = predicted_Y_index + 1
 
-    logging.info("Predictions (Y):")
-    logging.info(predicted_Y)
-
-    logging.info("Predictions (y-index)")
-    logging.info(predicted_Y_class_id.tolist())
-
     classification = classification_report(
         test_Y, predicted_Y_class_id, target_names=label_names
     )
-    logging.info("Classification Report:")
-    logging.info(classification)
+    logging.info(f"Classification Report:\n{classification}")
 
     # TODO: These outputs need to be saved somehow. Also add that path to the config object.
 
