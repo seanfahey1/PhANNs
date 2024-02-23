@@ -3,37 +3,39 @@ project_root_dir = '.'
 
 [load]
 prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_' ]
-train_data_dir = 'dataset'
-output_data_dir = 'features'
+train_data_dir = '../datasets/no_expert_curation/grouped_fastas'
+output_data_dir = '../datasets/no_expert_curation/loaded_data'
 
 [load.fasta_labels]
-baseplate = 'BPL'
+BPL = 'BPL'
+CLR = 'CLR'
 HTJ = 'HTJ'
-major_tail = 'MTL'
-minor_tail = 'm_TL'
-portal = 'PTL'
-tail_fiber = 'TFR'
-collar = 'CLR'
-major_capsid = 'MCP'
-minor_capsid = 'm_CP'
-shaft = 'TSH'
-others = 'OTH'
+m_CP = 'm_CP'
+MCP = 'MCP'
+m_TL = 'm_TL'
+MTL = 'MTL'
+PTL = 'PTL'
+TFR = 'TFR'
+TSH = 'TSH'
+TSP = 'TSP'
+OTH = 'OTH'
 
 [load.class_number]
-MCP = 1
-m_CP = 2
-BPL = 3
-MTL = 4
-m_TL = 5
-PTL = 6
-TFR = 7
-TSH = 8
-CLR = 9
-HTJ = 10
-OTH = 11
+BPL = 1
+CLR = 2
+HTJ = 3
+m_CP = 4
+MCP = 5
+m_TL = 6
+MTL = 7
+PTL = 8
+TFR = 9
+TSH = 10
+TSP = 11
+OTH = 12
 
 [train]
-model_dir = 'models/'
+model_dir = '../datasets/no_expert_curation/models/'
 
 [train.models]
 di_sc = false
@@ -47,7 +49,7 @@ di_p = false
 tri = false
 tri_p = false
 tetra_sc_tri_p = false
-all = false
+all = true
 
 [test]
 model = 'all'
