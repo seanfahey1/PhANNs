@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 import sys
@@ -22,6 +23,22 @@ logging.basicConfig(
     level=logging.INFO,
     format=FORMAT,
 )
+
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Trains a PhANNs model using pre-loaded data. Must run load.py step first."
+    )
+    parser.add_argument(
+        "--c",
+        "-config",
+        type=str,
+        default="config.toml",
+        help="Optional config file in .toml format.",
+    )
+
+    args = parser.parse_args()
+    return args
 
 
 def add_to_df(df, test_Y_index, test_Y_predicted, model_name, class_numbers):
@@ -193,7 +210,8 @@ def train_kfold(
 
 def main():
     logging.info("Starting....")
-    config = toml.load("config.toml")
+    args = get_args()
+    config = toml.load(args.c)
 
     logging.info("Config:")
     for section in config.keys():

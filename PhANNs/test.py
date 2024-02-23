@@ -1,3 +1,4 @@
+import argparse
 import logging
 import sys
 from datetime import datetime
@@ -15,6 +16,22 @@ logging.basicConfig(
     level=logging.INFO,
     format=FORMAT,
 )
+
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Tests a PhANNs model using pre-loaded test data. Must run load.py step first."
+    )
+    parser.add_argument(
+        "--c",
+        "-config",
+        type=str,
+        default="config.toml",
+        help="Optional config file in .toml format.",
+    )
+
+    args = parser.parse_args()
+    return args
 
 
 def get_data(model_dir):
@@ -41,7 +58,8 @@ def predict(model_dir, model_name, test_X):
 
 def main():
     logging.info("Starting....")
-    config = toml.load("config.toml")
+    args = get_args()
+    config = toml.load(args.c)
 
     logging.info("Config:")
     for section in config.keys():

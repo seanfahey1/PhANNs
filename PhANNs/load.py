@@ -1,3 +1,4 @@
+import argparse
 import itertools
 import logging
 import sys
@@ -102,6 +103,22 @@ class Data:
         self.id_arr[row_num] = row_num
 
 
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Loads fasta sequence datasets into feature arrays."
+    )
+    parser.add_argument(
+        "--c",
+        "-config",
+        type=str,
+        default="config.toml",
+        help="Optional config file in .toml format.",
+    )
+
+    args = parser.parse_args()
+    return args
+
+
 def fasta_count(all_files):
     total_seqs = 0
     for file in all_files:
@@ -164,7 +181,8 @@ def model_specific_arrays(out_dir, z_array, group_array):
 
 def main():
     logging.info("Starting....")
-    config = toml.load("config.toml")
+    args = get_args()
+    config = toml.load(args.c)
 
     logging.info("Config:")
     for section in config.keys():
