@@ -3,8 +3,8 @@ project_root_dir = '.'
 
 [load]
 prefixes = [ '1_', '2_', '3_', '4_', '5_', '6_', '7_', '8_', '9_', '10_', '11_' ]
-train_data_dir = '../../datasets/no_expert_curation/grouped_fastas'
-output_data_dir = '../../datasets/no_expert_curation/loaded_data'
+train_data_dir = '../../datasets/no_expert_curation_subset_OTH/grouped_fastas'
+output_data_dir = '../../datasets/no_expert_curation_subset_OTH/loaded_data'
 
 [load.fasta_labels]
 BPL = 'BPL'
@@ -35,7 +35,7 @@ TSP = 11
 OTH = 12
 
 [train]
-model_dir = '../../datasets/no_expert_curation/models/'
+model_dir = '../../datasets/no_expert_curation_subset_OTH/models/'
 
 [train.models]
 di_sc = false
