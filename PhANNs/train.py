@@ -84,7 +84,7 @@ def train_kfold(
     group_arr,
     out_dir,
 ):
-    for model_number in range(1, 11):
+    for model_number in range(7, 11):
         logging.info("-" * 80)
         logging.warning(f"Doing cross validation on {model_name} - {model_number}")
 
