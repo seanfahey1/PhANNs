@@ -53,3 +53,4 @@ all = true
 
 [test]
 model = 'all'
+output_dir = '../../datasets/no_expert_curation_subset_OTH/predictions/'

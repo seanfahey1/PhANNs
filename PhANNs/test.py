@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import toml
 from sklearn.metrics import classification_report
 from tensorflow.keras.models import load_model
@@ -61,6 +62,9 @@ def main():
     args = get_args()
     config = toml.load(args.c)
 
+    output_dir = Path(config["test"]["output_dir"])
+    output_dir.mkdir(exist_ok=True, parents=True)
+
     logging.info("Config:")
     for section in config.keys():
         for k, v in config[section].items():
@@ -91,7 +95,11 @@ def main():
     )
     logging.info(f"Classification Report:\n{classification}")
 
-    # TODO: These outputs need to be saved somehow. Also add that path to the config object.
+    predicted_Y_df = pd.DataFrame(predicted_Y, columns=label_names)
+    predicted_Y_df["prediction_idx"] = predicted_Y_class_id
+    predicted_Y_df["prediction"] = [label_names[x] for x in predicted_Y_index]
+
+    predicted_Y_df.to_csv("path/to/file.csv", header=True, index=False)
 
 
 if __name__ == "__main__":
