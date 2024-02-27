@@ -99,7 +99,7 @@ def main():
     predicted_Y_df["prediction_idx"] = predicted_Y_class_id
     predicted_Y_df["prediction"] = [label_names[x] for x in predicted_Y_index]
 
-    predicted_Y_df.to_csv("path/to/file.csv", header=True, index=False)
+    predicted_Y_df.to_csv(output_dir / "predictions.csv", header=True, index=False)
 
 
 if __name__ == "__main__":
