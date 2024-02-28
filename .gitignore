@@ -110,3 +110,5 @@ new_others/
 *.tar
 *.fasta
 *bkup
+PhANNs/plotting_predictions/*
+todo.txt

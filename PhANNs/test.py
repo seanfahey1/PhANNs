@@ -98,7 +98,7 @@ def main():
     predicted_Y_df = pd.DataFrame(predicted_Y, columns=label_names)
     predicted_Y_df["prediction_idx"] = predicted_Y_class_id
     predicted_Y_df["prediction"] = [label_names[x] for x in predicted_Y_index]
-    predicted_Y_df.insert(0, "class", test_Y)
+    predicted_Y_df.insert(0, "class", label_names[test_Y])
 
     predicted_Y_df.to_csv(output_dir / "predictions.csv", header=True, index=False)
 

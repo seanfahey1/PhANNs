@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phanns"
+authors = [
+    {name = "Sean Fahey", email = "sfahey1745@sdsu.edu"},
+]
+description = "PhANNs (Phage Artifical Neural Networks)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "BSD-3-Clause"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+]
+dynamic = ["version"]
+
+[project.scripts]
+phanns.load_dataset = "phanns:load_dataset"
+phanns.train = "phanns:train"
+phanns.test = "phanns:initial_test"
+phanns.test_from_fasta = "phanns:test_from_fasta"
+phanns.write_config = "utils.config_handler:write_from_toml"
+phanns.reset_config = "utils.config_handler:verify_clear_config"
