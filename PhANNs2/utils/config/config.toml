@@ -1,0 +1,56 @@
+[main]
+project_root_dir = "."
+
+[file_locations]
+fasta_data_dir = "../../datasets/no_expert_curation_subset_OTH/grouped_fastas"
+array_data_dir = "../../datasets/no_expert_curation_subset_OTH/loaded_data"
+model_dir = "../../datasets/no_expert_curation_subset_OTH/models/"
+test_outputs_dir = "../../datasets/no_expert_curation_subset_OTH/predictions/"
+
+[class_info]
+group_prefixes = [ "1_", "2_", "3_", "4_", "5_", "6_", "7_", "8_", "9_", "10_", "11_",]
+
+[class_numbers]
+BPL = 1
+CLR = 2
+HTJ = 3
+m_CP = 4
+MCP = 5
+m_TL = 6
+MTL = 7
+PTL = 8
+TFR = 9
+TSH = 10
+TSP = 11
+OTH = 12
+
+[group_names]
+BPL = "BPL"
+CLR = "CLR"
+HTJ = "HTJ"
+m_CP = "m_CP"
+MCP = "MCP"
+m_TL = "m_TL"
+MTL = "MTL"
+PTL = "PTL"
+TFR = "TFR"
+TSH = "TSH"
+TSP = "TSP"
+OTH = "OTH"
+
+[models]
+di_sc = false
+di_sc_p = false
+tri_sc = false
+tri_sc_p = false
+tetra_sc = false
+tetra_sc_p = false
+di = false
+di_p = false
+tri = false
+tri_p = false
+tetra_sc_tri_p = false
+all = true
+
+[test]
+model = "all"

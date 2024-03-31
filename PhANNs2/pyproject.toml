@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools", "setuptools-scm", "wheel", "Cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -15,13 +15,18 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
+    'tensorflow==2.15.0',
+    'scipy>=1.12.0',
+    'statsmodels>=0.14.0',
+    'Biopython>=1.83',
+    'pip-tools>=7.4.0'
 ]
 dynamic = ["version"]
 
 [project.scripts]
-phanns.load_dataset = "phanns:load_dataset"
-phanns.train = "phanns:train"
-phanns.test = "phanns:initial_test"
-phanns.test_from_fasta = "phanns:test_from_fasta"
-phanns.write_config = "utils.config_handler:write_from_toml"
-phanns.reset_config = "utils.config_handler:verify_clear_config"
+phanns_load_dataset = "phanns:load_dataset"
+phanns_train = "phanns:train"
+phanns_test = "phanns:initial_test"
+phanns_test_from_fasta = "phanns:test_from_fasta"
+phanns_write_config = "utils.config_handler:write_from_toml"
+phanns_reset_config = "utils.config_handler:verify_clear_config"

@@ -112,3 +112,5 @@ new_others/
 *bkup
 PhANNs/plotting_predictions/*
 todo.txt
+*.c
+PhANNs2/test_data/

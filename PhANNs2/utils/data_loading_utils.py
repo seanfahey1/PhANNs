@@ -13,6 +13,16 @@ def fasta_count(all_files):
 
 
 def collect_files(directory: str, prefixes: list, labels: dict):
+    """Collect de-de-replicated fasta files for each class.
+
+    Args:
+        directory (str): The target directory path.
+        prefixes (list): The list of prefixes for each class (typically 1_, 2_, ..., n_)
+        labels (dict): A dictionary of labels in the format of {"file_stem": "class_id_code"}
+
+    Returns:
+        _type_: _description_
+    """
     file_dict = {}
     for prefix in prefixes:
         for file, cls in labels.items():
@@ -24,20 +34,18 @@ def collect_files(directory: str, prefixes: list, labels: dict):
     return file_dict
 
 
-def zscore(array: np.array, axis=0):
-    mean_array = np.zeros(array.shape[1])
-    stdev_array = np.zeros(array.shape[1])
-    zscore_array = np.zeros(array.shape)
+def zscore(mean_array, stddev_array, data_array):
+    zscore_array = np.zeros(data_array.shape)
 
-    for i, col in enumerate(array.T):
-        mean_val = np.mean(col)
-        stdev_val = np.std(col)
+    for i in range(data_array.shape[1]):
+        mean_val, stddev_val, data_col = (
+            mean_array[i],
+            stddev_array[i],
+            data_array[:, i],
+        )
 
-        mean_array[i] = mean_val
-        stdev_array[i] = stdev_val
+        for j in range(len(data_col)):
+            zscore_val = (mean_val - data_col[j]) / stddev_val
+            zscore_array[j][i] = zscore_val
 
-        for j, value in enumerate(col):
-            zscore_val = (value - mean_val) / stdev_val
-            zscore_array[i][j] = zscore_val
-
-    return mean_array, stdev_array, zscore_array
+    return zscore_array

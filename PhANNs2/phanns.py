@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 from pathlib import Path
 
+import pyximport
 from Bio import SeqIO
 from utils.config_handler import load_stored_config
 from utils.data import Data
-from utils.data_loading_utils import collect_files, fasta_count, zscore
+from utils.data_loading_utils import collect_files, fasta_count
 from utils.logger_util import Logger
+
+pyximport.install()
+from utils.calc import zscore
 
 
 def load_dataset():
@@ -13,16 +17,16 @@ def load_dataset():
     logger = Logger(filename="load_{time}.log")
     logger.log_config(config)
 
-    out_dir = Path(config["main"].get("project_root_dir")) / config["load"].get(
-        "output_data_dir"
-    )
+    out_dir = Path(config["main"].get("project_root_dir")) / config[
+        "file_locations"
+    ].get("array_data_dir")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     file_dict = collect_files(
         Path(config["main"].get("project_root_dir"))
-        / config["load"].get("train_data_dir"),
-        config["load"]["prefixes"],
-        config["load"]["fasta_labels"],
+        / config["file_locations"].get("fasta_data_dir"),
+        config["class_info"]["group_prefixes"],
+        config["group_names"],
     )
 
     num_proteins = fasta_count(file_dict.keys())
@@ -45,7 +49,8 @@ def load_dataset():
 
         logger.log(f"Finished file {file_path.stem}. Current row: {row_counter}")
 
-    mean_array, stdev_array, zscore_array = zscore(data.arr, axis=0)
+    mean_array, stdev_array, zscore_array = zscore(data.arr)
+    print("")
 
 
 def train():
@@ -61,3 +66,6 @@ def initial_test():
 def test_from_fasta():
     logger = Logger(filename="test_from_fasta_{time}.log")
     pass
+
+
+load_dataset()

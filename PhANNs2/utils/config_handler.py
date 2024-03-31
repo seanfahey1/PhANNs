@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import argparse
 import sys
 from pathlib import Path
@@ -30,6 +31,17 @@ def _get_config_args():
 
 
 def _valid_s_k_v(s: str) -> str:
+    """Checks if a string is in a valid [section].[key].[value] format for use in toml based config.
+
+    Args:
+        s (str): _description_
+
+    Raises:
+        argparse.ArgumentTypeError: _description_
+
+    Returns:
+        str: _description_
+    """
     try:
         assert len(s.split(".")) == 3
         return s
@@ -40,10 +52,20 @@ def _valid_s_k_v(s: str) -> str:
 
 
 def _get_config_path():
+    """Retrieves config file path.
+
+    Returns:
+        _type_: _description_
+    """
     return Path(__file__).parent.resolve() / "config/config.toml"
 
 
 def load_stored_config():
+    """Load the stored config file.
+
+    Returns:
+        _type_: _description_
+    """
     config_path = _get_config_path()
     if not config_path.is_file():
         config = clear_config()
@@ -56,6 +78,14 @@ def load_stored_config():
 
 
 def _set_from_toml(path):
+    """Update the current config with values from a toml file.
+
+    Args:
+        path (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     new_config = toml.load(path)
     config = load_stored_config()
 
@@ -69,6 +99,17 @@ def _set_from_toml(path):
 
 
 def _set_from_cmd(section: str, key: str, value, config: dict) -> dict:
+    """Set a value in a toml based config.
+
+    Args:
+        section (str): _description_
+        key (str): _description_
+        value (_type_): _description_
+        config (dict): _description_
+
+    Returns:
+        dict: _description_
+    """
     if section not in config.keys():
         config["section"] = dict()
 
@@ -102,6 +143,11 @@ def view_config():
 
 
 def clear_config():
+    """Create a fresh config.
+
+    Returns:
+        _type_: _description_
+    """
     config_path = _get_config_path()
 
     config = {
